@@ -86,7 +86,7 @@
 
                 <div class="orbit-system">
                     <div class="planet-core" id="logo-sman8">
-                        <div class="planet-visual" style="background-image: url('/sman8.jpg');"></div>
+                        <div class="planet-visual" style="background-image: url('https://res.cloudinary.com/dvhrahubq/image/upload/q_auto/f_auto/v1777022786/sman8_uql6ms.png');"></div>
                     </div>
                     
                     <div class="scatter-layout area-right">
@@ -114,9 +114,8 @@
                             <span class="label">MEMORY LOG_</span>
                             <p>Beyond academics, my active involvement in the Scouts movement provided crucial balance. Serving as a Pradani (Female Scout Leader), I participated in extensive leadership training and regional councils across South Jakarta. More importantly, I frequently volunteered at disaster relief sites during major emergencies, such as fires and floods. This fieldwork grounded me and restored my sense of humanity. </p>
                         </div>
-
                         <div class="scatter-item pos-img-1">
-                            <div class="polaroid-frame" style="background-image: url('https://res.cloudinary.com/dvhrahubq/video/upload/f_auto,q_auto/v1777219100/pramuki_booklet_low_quality_1_yybk8n.mp4');"></div>
+                            <source src="https://res.cloudinary.com/dvhrahubq/video/upload/q_auto/f_auto/v1777219100/pramuki_booklet_low_quality_1_yybk8n.mp4" loading="lazy" type="video/mp4">
                         </div>
                         <div class="scatter-item pos-img-2">
                             <div class="polaroid-frame" style="background-image: url('https://res.cloudinary.com/dvhrahubq/image/upload/f_auto,q_auto/v1777022788/Screenshot_2026-03-02_003315_raeuwd.png');"></div>
@@ -132,13 +131,11 @@
 
                 <div class="orbit-system">
                     <div class="planet-core" id="logo-unair">
-                        <div class="planet-visual" style="background-image: url('/unair.png');"></div>
+                        <div class="planet-visual" style="background-image: url('https://res.cloudinary.com/dvhrahubq/image/upload/q_auto/f_auto/v1777022830/unair_yarkhv.png');"></div>
                     </div>
 
                     <div class="scatter-layout area-left">
                         
-                        <div class="ghost-logo" style="background-image: url('/ftmm.png');"></div>
-
                         <div class="scatter-item pos-title">
                             <h3 class="holo-glitch-text">UNIVERSITAS AIRLANGGA</h3>
                         </div>
@@ -197,11 +194,19 @@
                                 </p>
                             </div>
 
-                            <div class="m-box glass-panel desc-box-a" style="width: 400px; height: auto;">
-                                <span class="label" style="color: #00d2ff; font-family: monospace; font-size: 0.7rem; letter-spacing: 1px;">// VISION & ALGORITHM</span>
-                                <p style="font-size: 0.85rem; line-height: 1.6; color: #eee; text-align: justify; margin-top: 10px;">
-                                    Sistem evaluasi kualitas citra otomatis menggunakan arsitektur Computer Vision. Proyek ini berfokus pada ekstraksi fitur visual dan perhitungan metrik akurasi piksel untuk menentukan tingkat kejernihan dan degradasi pada gambar secara komputasional.
-                                </p>
+                            <div class="m-box glass-panel desc-box-a">
+                                <b>Role:</b> Computer Vision Engineer <br>
+                                <b>Tech Stack:</b> Python, OpenCV, Canny Edge Detection, Variance of Laplacian <br><br>
+
+                                <b>Project Overview:</b><br>
+                                Developed an autonomous, pixel-analytics-based visual inspection system to replace manual PCB quality evaluation with precise and measurable metrics.<br><br>
+
+                                <b>Key Engineering Highlights:</b>
+                
+                                    <li><b>Mathematical Pipeline:</b> Implemented Variance of Laplacian calculations to translate image sharpness into definitive numerical values.</li>
+                                    <li><b>Advanced Edge Extraction:</b> Optimized the Canny Edge Detection algorithm (Gaussian noise reduction, Sobel gradient, NMS, & Hysteresis) to yield significantly thinner and more precise edge extractions compared to standard Laplace operators.</li>
+                                    <li><b>Autonomous Classification:</b> Enabled the system to autonomously classify and sort the entire dataset based on strict, measurable edge strength thresholds.</li>
+                                </ul>
                             </div>
 
                             <div class="m-box pdf-box-a" data-lenis-prevent style="width: 800px; height: 400px; padding: 0; background: #1e1e1e; border: 1px solid rgba(255, 255, 255, 0.2); pointer-events: auto;">
@@ -219,15 +224,22 @@
                                 </p>
                             </div>
 
-                            <div class="m-box glass-panel desc-box-b" style="width: 600px; height: auto;">
-                                <span class="label" style="color: gold; font-family: monospace; font-size: 1rem; letter-spacing: 1px;">// DEEP LEARNING & CV</span>
-                                <p style="font-size: 1.2rem; line-height: 1.6; color: #eee; text-align: justify; margin-top: 10px;">
-                                    Sistem manajemen parkir cerdas ini mengimplementasikan model <strong>YOLOv8</strong> untuk mendeteksi slot parkir kosong secara <em>real-time</em> melalui kamera pengawas. Dengan arsitektur <em>anchor-free</em>, model ini memprediksi lokasi objek secara langsung dan mengubah indikator <em>anchor box</em> menjadi merah saat mendeteksi keberadaan kendaraan, sehingga mengoptimalkan efisiensi panduan parkir.
-                                </p>
+                            <div class="m-box glass-panel desc-box-b">
+                                <b>Role:</b> AI Engineer <br>
+                                <b>Tech Stack:</b> YOLOv8, PyTorch, Deep Learning, Mosaic Augmentation <br><br>
+
+                                <b>Project Overview:</b><br>
+                                Designed a real-time AI architecture to dynamically detect, classify, and allocate vacant parking slots, optimizing spatial efficiency.<br><br>
+
+                                <b>Key Engineering Highlights:</b>
+                                    <li><b>Architecture Optimization:</b> Leveraged YOLOv8's anchor-free design to directly predict object centers, significantly accelerating Non-Maximum Suppression (NMS) post-processing.</li>
+                                    <li><b>Computational Efficiency:</b> Optimized network bottlenecks using ResNet blocks and flexible neck feature concatenation to minimize parameter count and tensor size.</li>
+                                    <li><b>Model Robustness:</b> Applied Mosaic Augmentation during training to handle object occlusion, successfully improving detection accuracy across diverse environmental conditions.</li>
+                                </ul>
                             </div>
 
                             <div class="m-box img-box-b1">
-                                <img src="https://res.cloudinary.com/dvhrahubq/image/upload/f_auto,q_auto/v1777022426/5_tedsrm.png" loading="lazy" alt="Screenshot 1">
+                                <video autoplay loop muted playsinline><source src="https://res.cloudinary.com/dvhrahubq/video/upload/q_auto/f_auto/v1777536441/HASIL_s4agm3.avi" type="video/mp4" ></video>
                             </div>
 
                             <div class="m-box img-box-b2">
@@ -247,8 +259,17 @@
                             </div>
 
                             <div class="m-box glass-panel desc-box-c">
-                                <span class="label">// AUTONOMOUS NAVIGATION</span>
-                                <p>Penelitian ini menyajikan simulasi sistem path planning...</p>
+                                <b>Role:</b> Robotics & Simulation Engineer <br>
+                                <b>Tech Stack:</b> PX4 SITL, Gazebo, ROS, MAVROS, RRT Algorithm <br><br>
+
+                                <b>Project Overview:</b><br>
+                                Built an autonomous UAV navigation simulation focused on maximizing route efficiency and minimizing computational latency in complex environments.<br><br>
+
+                                <b>Key Engineering Highlights:</b>
+                                    <li><b>Trajectory Optimization:</b> Implemented a secondary optimization protocol on the RRT algorithm, successfully streamlining the initial path from 102 waypoints down to 8 core waypoints.</li>
+                                    <li><b>Simulation Integration:</b> Integrated the PX4 flight controller (SITL) with a 6-DOF dynamic model in Gazebo, visualized in real-time via RViz.</li>
+                                    <li><b>Performance Metrics:</b> Achieved exceptional pathfinding efficiency with a minimum computational search time of 0.02 seconds in a highly obstacle-laden environment.</li>
+                                </ul>
                             </div>
 
                             <div class="m-box pdf-box-c" data-lenis-prevent style="pointer-events: auto;">
@@ -301,12 +322,18 @@
                                 <img src="https://res.cloudinary.com/dvhrahubq/image/upload/f_auto,q_auto/v1777193992/Screenshot_2025-08-14_181018_jm9uy1.png" loading="lazy" alt="Screenshot 2">
                             </div>
 
+                            <div class="m-box glass-panel desc-box-d">
+                                <b>Role:</b> Robotics Engineer (Navigation Specialist) <br>
+                                <b>Tech Stack:</b> Fast-RRT*, UWB Sensors, Kalman Filter, C#, Sensor Fusion <br><br>
 
-                            <div class="m-box glass-panel desc-box-d" style="width: 800px; height: auto;">
-                                <span class="label" style="color: gold; font-family: monospace; font-size: 0.7rem; letter-spacing: 1px;">// UNDERGRADUATE THESIS</span>
-                                <p style="font-size: 0.85rem; line-height: 1.6; color: #eee; text-align: justify; margin-top: 10px;">
-                                    Proyek skripsi ini berfokus pada optimasi navigasi <em>Automated Guided Vehicle</em> (AGV) di lingkungan dinamis. Sistem ini mengintegrasikan sensor <strong>Ultra-Wideband (UWB)</strong> dengan <em>Kalman Filter</em> untuk fusi data lokalisasi yang presisi. Data tersebut memandu algoritma <strong>Fast-RRT*</strong> dalam merencanakan jalur optimal dan cepat secara <em>real-time</em>, mencapai tingkat keberhasilan penghindaran rintangan 100% pada pengujian.
-                                </p>
+                                <b>Project Overview:</b><br>
+                                Optimized AGV navigation in dynamic environments through advanced sensor fusion to produce precise and reliable autonomous movement.<br><br>
+
+                                <b>Key Engineering Highlights:</b>
+                                    <li><b>Sensor Fusion Logic:</b> Implemented a Kalman Filter to fuse data across UWB, IMU, and encoder odometry, reducing dynamic localization error (RMSE) by 78.4% on the Y-axis.</li>
+                                    <li><b>Dynamic Path Planning:</b> Utilized the Fast-RRT* algorithm with Hybrid Sampling to compute collision-free trajectories instantly based on precision-corrected positional data.</li>
+                                    <li><b>Performance Reliability:</b> Achieved a 100% target success rate across 50 rigorous testing scenarios, yielding an average path efficiency of 75%.</li>
+                                </ul>
                             </div>
                             
                             <div class="m-box process-vid-d">
@@ -344,11 +371,18 @@
                                 </p>
                             </div>
 
-                            <div class="m-box glass-panel desc-box-e" style="width: 600px; height: auto;">
-                                <span class="label" style="color: gold; font-family: monospace; font-size: 0.7rem; letter-spacing: 1px;">// HARDWARE & CONTROL</span>
-                                <p style="font-size: 0.85rem; line-height: 1.6; color: #eee; text-align: justify; margin-top: 10px;">
-                                    Desain dan implementasi robot otonom untuk memecahkan labirin (<em>maze solving</em>) menggunakan algoritma <em>Wall Following</em>. Proyek ini mengintegrasikan pembacaan sensor jarak secara presisi dengan sistem kendali motor tertutup untuk menjaga jarak konstan dari dinding. Tantangan utama meliputi kalibrasi sensor, respons kendali di tikungan tajam, dan optimasi kecepatan manuver <em>hardware</em>.
-                                </p>
+                            <div class="m-box glass-panel desc-box-e">
+                                <b>Role:</b> Project Manager & Assistant Programmer <br>
+                                <b>Tech Stack:</b> Arduino Uno, PID Controller, Ultrasonic Sensors, DC Motors <br><br>
+
+                                <b>Project Overview:</b><br>
+                                Led the development of an autonomous, zero-mapping robotic navigation system capable of real-time adaptation in unpredictable spatial environments.<br><br>
+
+                                <b>Key Engineering Highlights:</b>
+                                    <li><b>Closed-loop PID Control:</b> Designed a PID controller to process real-time ultrasonic sensor data, consistently maintaining a strict 30 cm clearance from walls.</li>
+                                    <li><b>Performance Assessment:</b> Achieved an 80% success rate in obstacle avoidance maneuvers and identified algorithmic limitations during rapid wall-reference switching.</li>
+                                    <li><b>Project Management:</b> Coordinated the integration of encoder-based drive systems and sensory logic to ensure robotic stability during complex spatial transitions.</li>
+                                </ul>
                             </div>
 
                             <div class="m-box img-box-e1">
@@ -401,21 +435,168 @@
                                 <img src="https://res.cloudinary.com/dvhrahubq/image/upload/f_auto,q_auto/v1777086140/Screenshot_2026-04-25_100033_nnlppo.png" loading="lazy" alt="Screenshot 2">
                             </div>
 
-                            <div class="m-box glass-panel desc-box-f" style="width: 600px; height: auto;">
-                                <span class="label" style="color: gold; font-family: monospace; font-size: 0.7rem; letter-spacing: 1px;">// MECHATRONICS & AUTOMATION</span>
-                                <p style="font-size: 0.85rem; line-height: 1.6; color: #eee; text-align: justify; margin-top: 10px;">
-                                    Eksperimen robotika yang mengintegrasikan mekanika, elektronika, dan perangkat lunak untuk simulasi logistik industri. Robot forklift otonom ini dirancang menggunakan sasis cetak 3D, dikendalikan oleh motor <em>stepper</em> presisi tinggi, dan memanfaatkan sensor warna untuk mengidentifikasi beban serta mengikuti garis lintasan di lingkungan pabrik simulasi.
-                                </p>
-                            </div>                        
+                            <div class="m-box glass-panel desc-box-f">
+                                <b>Role:</b> Assistant Programmer (Automation Logic) <br>
+                                <b>Tech Stack:</b> PID Control, TCRT5000 Array, Stepper Motor, Hardware-Software Integration <br><br>
+
+                                <b>Project Overview:</b><br>
+                                Developed the automation control system for a material handling robot, focusing on the synchronization of mechanical actuation and sensor calibration for autonomous navigation.<br><br>
+
+                                <b>Key Engineering Highlights:</b>
+                                    <li><b>Linear Stability:</b> Achieved optimal navigation stability through empirical calibration of a PID controller integrated with a 5-point TCRT5000 sensor array.</li>
+                                    <li><b>Automation Logic:</b> Synchronized vertical stepper motor actuation with ultrasonic sensor feedback to execute autonomous object detection and handling.</li>
+                                    <li><b>System Evaluation:</b> Evaluated crucial parameters in millimeter-scale maneuvers, specifically identifying how mechanical drafting limits (tolerance clearance) directly impact sensor accuracy during the payload release phase.</li>
+                                </ul>
+                            </div>            
                    
-                            <div class="m-box code-box-f code1-f" data-lenis-prevent style="width: 350px; height: 400px; padding: 0; pointer-events: auto; background: #1e1e1e; border: 1px solid #333;">
-                                <div style="background: #2d2d2d; color: #858585; font-size: 0.7rem; padding: 5px 10px; font-family: monospace; border-bottom: 1px solid #111;">stepper_control.ino</div>
-                                <iframe src="stepper_motor.ino" style="width: 100%; height: calc(100% - 25px); border: none; background: transparent; color: #fff;" data-lenis-prevent></iframe>
+                            <div class="m-box code-box-f code1-f" data-lenis-prevent style="width: 350px; height: 400px; padding: 0; pointer-events: auto; background: #1e1e1e; border: 1px solid #333; overflow: hidden;">
+    
+                                <div style="height: 28px; background: #2d2d2d; color: #858585; font-size: 0.7rem; padding: 5px 10px; font-family: monospace; border-bottom: 1px solid #111; box-sizing: border-box;">
+                                    stepper_control.ino
+                                </div>
+                                
+                                <div data-lenis-prevent style="height: calc(100% - 28px); overflow-y: auto; padding: 10px; font-family: 'Courier New', Courier, monospace; font-size: 0.8rem; color: #9cdcfe; white-space: pre-wrap; text-align: left; box-sizing: border-box; overscroll-behavior: contain;">
+                            #define STEPPER_PIN_1 22
+                            #define STEPPER_PIN_2 24
+                            #define STEPPER_PIN_3 26
+                            #define STEPPER_PIN_4 28
+                            int step_number = 0;
+
+                            void setup() {
+                            pinMode(STEPPER_PIN_1, OUTPUT);
+                            pinMode(STEPPER_PIN_2, OUTPUT);
+                            pinMode(STEPPER_PIN_3, OUTPUT);
+                            pinMode(STEPPER_PIN_4, OUTPUT);
+                            }
+
+                            void loop() {
+                            for(int i = 0; i &lt; 5000; i++){
+                                OneStep(false); 
+                                delay(2);
+                            } 
+                            delay (1000);
+                            
+                            for(int i = 0; i &lt; 2300; i++){
+                                OneStep(true); 
+                                delay(2);
+                            }
+                            delay (1000);
+                            }   
+
+                            void OneStep(bool dir){
+                            if(dir){
+                                switch(step_number){
+                                case 0:
+                                digitalWrite(STEPPER_PIN_1, HIGH);
+                                digitalWrite(STEPPER_PIN_2, LOW);
+                                digitalWrite(STEPPER_PIN_3, LOW);
+                                digitalWrite(STEPPER_PIN_4, LOW);
+                                break;
+                                case 1:
+                                digitalWrite(STEPPER_PIN_1, LOW);
+                                digitalWrite(STEPPER_PIN_2, HIGH);
+                                digitalWrite(STEPPER_PIN_3, LOW);
+                                digitalWrite(STEPPER_PIN_4, LOW);
+                                break;
+                                case 2:
+                                digitalWrite(STEPPER_PIN_1, LOW);
+                                digitalWrite(STEPPER_PIN_2, LOW);
+                                digitalWrite(STEPPER_PIN_3, HIGH);
+                                digitalWrite(STEPPER_PIN_4, LOW);
+                                break;
+                                case 3:
+                                digitalWrite(STEPPER_PIN_1, LOW);
+                                digitalWrite(STEPPER_PIN_2, LOW);
+                                digitalWrite(STEPPER_PIN_3, LOW);
+                                digitalWrite(STEPPER_PIN_4, HIGH);
+                                break;
+                                } 
+                            }else{ 
+                                switch(step_number){
+                                case 0:
+                                digitalWrite(STEPPER_PIN_1, LOW);
+                                digitalWrite(STEPPER_PIN_2, LOW);
+                                digitalWrite(STEPPER_PIN_3, LOW);
+                                digitalWrite(STEPPER_PIN_4, HIGH);
+                                break;
+                                case 1:
+                                digitalWrite(STEPPER_PIN_1, LOW);
+                                digitalWrite(STEPPER_PIN_2, LOW);
+                                digitalWrite(STEPPER_PIN_3, HIGH);
+                                digitalWrite(STEPPER_PIN_4, LOW);
+                                break;
+                                case 2:
+                                digitalWrite(STEPPER_PIN_1, LOW);
+                                digitalWrite(STEPPER_PIN_2, HIGH);
+                                digitalWrite(STEPPER_PIN_3, LOW);
+                                digitalWrite(STEPPER_PIN_4, LOW);
+                                break;
+                                case 3:
+                                digitalWrite(STEPPER_PIN_1, HIGH);
+                                digitalWrite(STEPPER_PIN_2, LOW);
+                                digitalWrite(STEPPER_PIN_3, LOW);
+                                digitalWrite(STEPPER_PIN_4, LOW);
+                                } 
+                            }
+                            step_number++;
+                            if(step_number &gt; 3){
+                                step_number = 0;
+                            }
+                            }
+                                </div>
                             </div>
 
-                            <div class="m-box code-box-f code2-f" data-lenis-prevent style="width: 350px; height: 400px; padding: 0; pointer-events: auto; background: #1e1e1e; border: 1px solid #333;">
-                                <div style="background: #2d2d2d; color: #858585; font-size: 0.7rem; padding: 5px 10px; font-family: monospace; border-bottom: 1px solid #111;">color_sensor_logic.ino</div>
-                                <iframe src="tes_Sensor_warna_asurobot3.ino" style="width: 100%; height: calc(100% - 25px); border: none; background: transparent; color: #fff;" data-lenis-prevent></iframe>
+                            <div class="m-box code-box-f code2-f" data-lenis-prevent style="width: 350px; height: 400px; padding: 0; pointer-events: auto; background: #1e1e1e; border: 1px solid #333; overflow: hidden;">
+                                
+                                <div style="height: 28px; background: #2d2d2d; color: #858585; font-size: 0.7rem; padding: 5px 10px; font-family: monospace; border-bottom: 1px solid #111; box-sizing: border-box;">
+                                    color_sensor_logic.ino
+                                </div>
+                                
+                                <div data-lenis-prevent style="height: calc(100% - 28px); overflow-y: auto; padding: 10px; font-family: 'Courier New', Courier, monospace; font-size: 0.8rem; color: #9cdcfe; white-space: pre-wrap; text-align: left; box-sizing: border-box; overscroll-behavior: contain;">
+                            #include &lt;Wire.h&gt;
+                            #include &lt;Adafruit_TCS34725.h&gt;
+
+                            #define SDA_PIN 20 // Hubungkan SDA sensor ke pin A4 Arduino
+                            #define SCL_PIN 21 // Hubungkan SCL sensor ke pin A5 Arduino
+
+                            Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_50MS, TCS34725_GAIN_4X);
+
+                            void setup() {
+                            Serial.begin(9600);
+                            if (tcs.begin()) {
+                                Serial.println("Sensor TCS34725 ditemukan.");
+                            } else {
+                                Serial.println("Sensor TCS34725 tidak ditemukan. Periksa koneksi.");
+                                while (1);
+                            }
+                            }
+
+                            void loop() {
+                            uint16_t r, g, b, c;
+                            tcs.getRawData(&amp;r, &amp;g, &amp;b, &amp;c);
+                            
+                            Serial.print("Warna: ");
+                            if (c &gt; 200) {
+                                float red = float(r) / float(c);
+                                float green = float(g) / float(c);
+                                float blue = float(b) / float(c);
+                                
+                                if (red &gt; green &amp;&amp; red &gt; blue) {
+                                Serial.println("Merah");
+                                } else if (green &gt; red &amp;&amp; green &gt; blue) {
+                                Serial.println("Hijau");
+                                } else if (blue &gt; red &amp;&amp; blue &gt; green) {
+                                Serial.println("Biru");
+                                } else {
+                                Serial.println("Warna lain");
+                                }
+                            } else {
+                                Serial.println("Tidak ada objek yang terdeteksi.");
+                            }
+
+                            delay(1000);
+                            }
+                                </div>
                             </div>
                         </div>
 

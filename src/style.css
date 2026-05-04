@@ -201,6 +201,7 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
 .carousel-container {
     width: 100%;
     height: 100%;
+    margin-left: 100px; /* Silakan ubah angkanya (misal 80px atau 100px) sampai posisinya pas di tengah */
     display: flex;
     align-items: center;
     position: relative;
@@ -211,7 +212,7 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
 .carousel-track {
     display: flex;
     gap: 150px; /* Jarak antar kartu */
-    padding-left: 50vw; /* Kartu pertama di tengah layar */
+    padding-left: 70vw; /* Kartu pertama di tengah layar */
     padding-right: 80vw; /* Ruang bernapas di akhir rel */
     width: max-content !important; /* WAJIB: Agar rel memanjang mengikuti jumlah kartu */
     height: 100%;
@@ -220,23 +221,13 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
 
 /* KARTU HARUS RELATIVE, BUKAN ABSOLUTE */
 .card {
-    flex-shrink: 0;
-    width: 300px;
-    height: 450px;
-    position: relative !important; 
-    z-index: 10;
-    cursor: pointer;
-    transform-origin: center center;
-}
-.card-inner-flip {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-    border: 1px solid #333;
-    background: #111; 
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    /* Shadow dekat dan pekat saat di pinggir */
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.8); 
+    
+    /* HANYA transisi shadow dan warna. DILARANG menggunakan transisi pada transform */
+    transition: box-shadow 0.4s ease, border-color 0.4s ease;
 }
 
 /* EFEK DEPAN-BELAKANG (Thumbnail memudar ke video) */
@@ -245,34 +236,53 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
     top: 0; left: 0;
     width: 100%; height: 100%;
     transition: opacity 0.8s ease; 
+    border-radius: 16px; 
+    overflow: hidden; 
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.card-back { z-index: 1; opacity: 1; }
-.card-front { z-index: 2; opacity: 1; }
-
-.card-front img {
-    width: 100%; 
+/* Wajib ada sebagai kerangka acuan elemen absolute di dalamnya */
+.card-inner-flip {
+    position: relative;
+    width: 100%;
     height: 100%;
-    object-fit: cover; 
+    /* Tambahkan ini untuk efek angin yang mulus */
+    transition: transform 0.3s ease-out; 
+}
+.card-back { 
+    z-index: 1; /* Lapisan bawah */
+    opacity: 1; 
 }
 
-/* VIDEO BELAKANG: Ditampilkan 100% utuh tanpa di-zoom/potong */
-.card-back video, .card-back img {
-    width: 100%; 
-    height: 100%;
-    object-fit: cover; /* Penuhi seluruh kartu */
-    object-position: center center; /* Pastikan bagian yang dipotong adalah ujung atas/bawah, bukan intinya */
+.card-front {
+    z-index: 2; /* Lapisan atas, WAJIB agar menutupi video */
+    opacity: 1;
+    transition: opacity 0.8s ease;
+}
+.card-face img, 
+.card-face video {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: 16px; 
+    z-index: 0; 
 }
 
 /* TRIGERR SAAT KARTU ADA DI TENGAH BUKIT */
 .card.active-highlight .card-front {
-    opacity: 0; /* Thumbnail menghilang, video kelihatan */
-}
-.card.active-highlight {
-    box-shadow: 0 0 40px var(--accent-glow);
-    border-color: var(--accent-glow);
+    opacity: 0; /* Thumbnail menghilang, video kelihatan*/ 
 }
 
+/* 3. Tarik teks label ke lapisan paling atas (z-index: 2) */
+.card-label {
+    position: absolute;
+    bottom: 20px; 
+    left: 20px;
+    z-index: 2; 
+    color: #fff;
+    font-weight: bold;
+}
 /* ================= =====================
    POSISI TEKS GLOBAL (Holo Layout)
    ========================================= */
@@ -373,15 +383,15 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
 /* =========================================
    MILESTONE STICKY STACKING SECTION (NEW ENGINE)
    ========================================= */
-.milestone-section {
-    position: relative;
-    background: #000;
-}
-
-/* Pembungkus luar, biarkan tingginya menyesuaikan isi layer */
-.milestone-scroll-space {
-    position: relative;
-    width: 100%;
+.milestone-sticky-cam,
+.milestone-scroll-space,
+.education-orbit-section,
+.experience-section {
+    height: 100vh !important; /* Wajib setinggi layar HP */
+    display: flex !important;
+    align-items: center !important; /* Ini yang menahan konten di tengah & menciptakan <space> atas-bawah */
+    justify-content: center !important;
+    overflow: hidden;
 }
 
 .milestone-header {
@@ -424,7 +434,7 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
 
 .portal-desc {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: #ffffff;
     opacity: 0.7;
 }
@@ -479,6 +489,8 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
 /* Setelan Animasi Transisi (Bersih & Elegan) */
 .m-box {
     position: absolute; /* INI KUNCINYA! Melepas elemen dari gravitasi HTML */
+    border-radius: 16px !important;
+    overflow: hidden !important; /* Wajib ada untuk memotong gambar/video di dalamnya */
 }
 /* Antrean Waktu (Stagger) */
 .title-box-a, .title-box-b, .title-box-c, .title-box-d, .title-box-e, .title-box-f { transition-delay: 0.1s; }
@@ -489,7 +501,7 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
    ----------------------------------------- */
 .title-box-a {
     top: 15%;
-    left: 20%;
+    left: 15%;
     z-index: 10;
     width: 800px; 
     white-space: nowrap; 
@@ -520,14 +532,15 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
 
 .desc-box-a {
     top: 40%;
-    left: 55%;
-    width: 400px;
+    left: 58%;
+    width: 500px;
     z-index: 5;
+    font-size: 1rem;
 }
 
 .pdf-box-a {
-    bottom: 22%;
-    right: 50%;
+    bottom: 15%;
+    right: 45%;
     width: 800px; 
     height: 400px;
     padding: 0;
@@ -557,22 +570,21 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
 .title-box-b .m-num { font-size: 5rem; color: rgba(255, 255, 255, 0.2); display: block; margin-bottom: -15px; }
 
 .desc-box-b {
-    top: 60%;      
+    top: 55%;      
     left: 8%;
-    width: 500px;  
+    width: 650px;  
     z-index: 5;
 }
 
 .img-box-b1 {
-    top: 5%;
-    right: 8%;
+    top: 6%;
+    right: 10%;
     width: 850px;
     height: 460px;
     padding: 0;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    transform: rotate(-2deg); 
     z-index: 5;
 }
 
@@ -585,17 +597,16 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    transform: rotate(3deg); 
     z-index: 6;
 }
 
-.img-box-b1 img, .img-box-b2 img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.img-box-b1 video, .img-box-b2 img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 .pdf-box-b {
-    bottom: 5%;
-    left: 40%; 
+    bottom: 0%;
+    left: 45%; 
     width: 400px;
-    height: 250px;
+    height: 200px;
     padding: 0;
     overflow: hidden;
     background: #1e1e1e;
@@ -608,7 +619,7 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
    LAYER C CLASSES (QUADROTOR)
    ========================================= */
 .title-box-c {
-    top: 55%;
+    top: 45%;
     left: 5%;
     z-index: 10;
     width: max-content;
@@ -624,16 +635,17 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
 .title-box-c .m-num { font-size: 5rem; color: rgba(255, 255, 255, 0.2); display: block; margin-bottom: -15px; }
 
 .desc-box-c {
-    top: 80%;
-    left: 6%;
-    width: 600px; 
+    top: 65%;
+    left: 5%;
+    width: 650px; 
     height: auto; 
     z-index: 5;
+    font-size: 0.8rem;
 }
 
 .pdf-box-c {
-    top: 15%;
-    right: 55%;
+    top: 8%;
+    right: 48%;
     width: 800px;
     height: 400px;
     padding: 0;
@@ -643,10 +655,9 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
 }
 .pdf-box-c iframe { width: 100%; height: 100%; border: none; display: block; }
 
-.vid1-box-c { bottom: 5%; right: 5%; width: 600px; height: 400px; z-index: 6; transform: rotate(-2deg); }
-.vid2-box-c { bottom: 50%; right: 5%; width: 800px; height: 400px; z-index: 8; transform: rotate(2deg); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-.vid3-box-c { bottom: 5%; right: 38%; width: 400px; height: 400px; z-index: 7; transform: rotate(-1deg); }
-
+.vid1-box-c { bottom: 5%; right: 5%; width: 600px; height: 400px; z-index: 6;}
+.vid2-box-c { bottom: 50%; right: 5%; width: 800px; height: 400px; z-index: 8; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+.vid3-box-c { bottom: 5%; right: 38%; width: 400px; height: 400px; z-index: 7; }
 .vid1-box-c, .vid2-box-c, .vid3-box-c { padding: 0; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.2); }
 .vid1-box-c video, .vid2-box-c video, .vid3-box-c video { width: 100%; height: 100%; object-fit: cover; }
 
@@ -654,7 +665,7 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
    LAYER D: AGV DYNAMIC NAVIGATION
    ========================================= */
 .title-box-d {
-    top: 15%;
+    top: 5%;
     left: 50%;
     z-index: 10;
     width: max-content;
@@ -669,71 +680,66 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
 .title-box-d p { font-size: 1.5rem !important; font-family: 'JetBrains Mono', monospace; color: #ccc; margin: 0; }
 .title-box-d .m-num { font-size: 5rem; color: rgba(255, 255, 255, 0.2); display: block; margin-bottom: -15px; }
 
-.desc-box-d { top: 32%; left: 50%; z-index: 5; }
+.desc-box-d { top: 25%; left: 50%; z-index: 5; font-size: 0.9rem; width: 800px; }
 
 
 .img-box-d2 {
-    bottom: 15%;
-    right: 43%;
+    bottom: 18%;
+    right: 46%;
     width: 200px;
     height: 150px;
     padding: 0;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    transform: rotate(3deg); 
     z-index: 6;
 }
 
 .img-box-d3 {
-    top: 45%;
-    right: 10%;
+    top: 67%;
+    right: 37%;
     width: 150px;
-    height: 150px;
+    height: 120px;
     padding: 0;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    transform: rotate(-2deg); 
     z-index: 5;
 }
 
 .img-box-d4 {
-    bottom: 40%;
-    right: 18%;
+    bottom: 34%;
+    right: 46%;
     width: 150px;
-    height: 150px;
+    height: 120px;
     padding: 0;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    transform: rotate(3deg); 
     z-index: 6;
 }
 
 .img-box-d5 {
-    top: 45%;
-    right: 25%;
-    width: 150px;
+    top: 60%;
+    right: 30%;
+    width: 120px;
     height: 150px;
     padding: 0;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    transform: rotate(-2deg); 
     z-index: 5;
 }
 
 .img-box-d6 {
-    bottom: 10%;
-    right: 32%;
+    bottom: 5%;
+    right: 33%;
     width: 200px;
     height: 150px;
     padding: 0;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    transform: rotate(3deg); 
     z-index: 6;
 }
 
@@ -751,7 +757,7 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
 
 .img-box-d8 {
     bottom: 5%;
-    right: 45%;
+    right: 44%;
     width: 250px;
     height: 120px;
     padding: 0;
@@ -777,7 +783,7 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
 
 
 .pdf-box-d{
-    top: 15%;
+    top: 10%;
     right: 55%;
     width: 900px;
     height: 500px;
@@ -788,24 +794,22 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
 }
 .pdf-box-d iframe {width: 100%; height: 100%; border: none; display: block; }
 .process-vid-d {
-    bottom: 30%; 
-    right: 32%;  
+    bottom: 25%; 
+    right: 8%;  
     width: 400px;
-    height: 250px;
+    height: 200px;
     z-index: 6;
-    transform: rotate(-4deg);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .result-vid-d {
-    bottom: 15%;
+    bottom: 5%;
     right: 8%;
     width: 480px; 
-    height: 270px;
+    height: 180px;
     z-index: 11; 
     border: 2px solid var(--accent-glow); 
     box-shadow: 0 0 30px rgba(0, 210, 255, 0.5);
-    transform: rotate(2deg);
 }
 
 .status-tag {
@@ -822,8 +826,8 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
    LAYER E: AGV DYNAMIC NAVIGATION
    ========================================= */
 .title-box-e {
-    top: 15%;
-    left: 15%;
+    top: 10%;
+    left: 10%;
     z-index: 10;
     width: max-content;
     white-space: nowrap;
@@ -837,19 +841,18 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
 .title-box-e p { font-size: 1.5rem !important; font-family: 'JetBrains Mono', monospace; color: #ccc; margin: 0; }
 .title-box-e .m-num { font-size: 5rem; color: rgba(255, 255, 255, 0.2); display: block; margin-bottom: -15px; }
 
-.desc-box-e { top: 35%; left: 15%; z-index: 5; }
+.desc-box-e { top: 30%; left: 10%; z-index: 5; font-size: 0.8rem; width: 700px; }
 
 
 .img-box-e1 {
-    bottom: 8%;
-    right: 60%;
+    bottom: 3%;
+    right: 65%;
     width: 500px;
     height: 350px;
     padding: 0;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    transform: rotate(3deg); 
     z-index: 6;
 }
 
@@ -862,20 +865,18 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    transform: rotate(-2deg); 
     z-index: 5;
 }
 
 .img-box-e3 {
-    bottom: 8%;
-    right: 10%;
+    bottom: 3%;
+    right: 5%;
     width: 500px;
     height: 350px;
     padding: 0;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    transform: rotate(3deg); 
     z-index: 6;
 }
 
@@ -897,7 +898,7 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
    ========================================= */
 .title-box-f {
     top: 5%;
-    left: 55%;
+    left: 52%;
     z-index: 10;
     width: max-content;
     white-space: nowrap;
@@ -911,7 +912,7 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
 .title-box-f p { font-size: 1.5rem !important; font-family: 'JetBrains Mono', monospace; color: #ccc; margin: 0; }
 .title-box-f .m-num { font-size: 5rem; color: rgba(255, 255, 255, 0.2); display: block; margin-bottom: -15px; }
 
-.desc-box-f { top: 25%; left: 55%; z-index: 5; }
+.desc-box-f { top: 25%; left: 52%; z-index: 5; font-size: 0.8rem; width: 800px; }
 
 
 .img-box-f1 {
@@ -923,7 +924,6 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    transform: rotate(-2deg);
     z-index: 6;
 }
 
@@ -949,7 +949,6 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    transform: rotate(3deg); 
     z-index: 6;
 }
 
@@ -974,7 +973,6 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    transform: rotate(3deg); 
     z-index: 6;
 }
 
@@ -992,7 +990,7 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
 .vid-f { padding: 0; overflow: hidden; background: #000; transition: filter 0.5s ease; }
 
 .code1-f{
-    top: 45%;
+    top: 50%;
     right: 12%;
     padding: 0;
     overflow: hidden;
@@ -1000,7 +998,7 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 .code2-f{
-    top: 45%;
+    top: 50%;
     right: 30%;
     padding: 0;
     overflow: hidden;
@@ -1305,37 +1303,62 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
 
 /* --- 2. GLASS PANEL STYLE (INFO & STORY) --- */
 .glass-panel {
-    /* Latar belakang diubah jadi warna gelap (abu-abu tua mendekati hitam) tapi agak transparan 85% */
-    background: rgba(15, 15, 15, 0.85); 
+    /* Base kaca gelap agak transparan */
+    background: rgba(20, 20, 25, 0.4); 
     
-    /* backdrop-filter DIHAPUS TOTAL DARI SINI */
+    /* Efek buram standar */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px); 
     
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 15px;
-    padding: 20px;
+    border-radius: 16px;
+    padding: 30px;
+    
+    /* Highlight cahaya di permukaan atas dan kanan */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    
+    /* RAHASIA KETEBALAN 3D: Tumpukan shadow solid ke arah kiri-bawah */
+    box-shadow: 
+        /* 1. Dinding ketebalan (Extrusion) - ditumpuk per 1px agar solid */
+        -1px 1px 0 rgba(255, 255, 255, 0.15),
+        -2px 2px 0 rgba(255, 255, 255, 0.10),
+        -3px 3px 0 rgba(255, 255, 255, 0.08),
+        -4px 4px 0 rgba(255, 255, 255, 0.05),
+        -5px 5px 0 rgba(0, 0, 0, 0.6), /* Tutup ujung dinding dengan bayangan gelap */
+        
+        /* 2. Drop shadow biasa yang memudar ke lantai */
+        -15px 20px 30px rgba(0, 0, 0, 0.8),
+        
+        /* 3. Inset highlight (Cahaya memantul di dalam kaca) */
+        inset 1px 1px 2px rgba(255, 255, 255, 0.15);
 }
 .glass-panel .label {
     font-size: 0.6rem; color: gold; font-family: monospace; letter-spacing: 1px; margin-bottom: 5px;
 }
-.glass-panel p, .glass-panel .data {
-    margin: 0; font-size: 0.9rem; line-height: 1.4;
+.glass-panel p, 
+.glass-panel .data {
+    margin: 0; 
+    font-size: 0.7rem; 
+    line-height: 1.5; 
+    color: rgba(255, 255, 255, 0.85);
+    font-family: 'JetBrains Mono', monospace; 
 }
 
-
-/* --- 3. POLAROID IMAGE STYLE --- */
 .polaroid-frame {
     width: 250px; height: 150px;
     background-color: #000;
-    border: 1px solid #444;
+    border: 1px solid rgba(255, 255, 255, 0.2); 
+    border-radius: 16px; 
+    overflow: hidden; 
     background-size: cover; background-position: center;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, border-color 0.3s ease;
 }
 .polaroid-frame:hover {
-    transform: scale(1.2) rotate(0deg) !important; /* Zoom & Lurus saat hover */
-    z-index: 20; border-color: gold;
+    transform: scale(1.1) !important;
+    z-index: 20; 
+    border-color: gold; 
 }
-
 /* =========================================
    KOORDINAT CUSTOM: SMAN 8 & UNAIR
    ========================================= */
@@ -1363,7 +1386,6 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
     clip-path: polygon(0 0, 85% 0, 100% 15%, 100% 100%, 15% 100%, 0 85%); 
     top: 0px; 
     left: 300px; 
-    transform: rotate(2deg); 
     text-align: right;
 }
 .area-right .pos-story-2 { width: 500px; 
@@ -1372,7 +1394,6 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
     clip-path: polygon(0 0, 85% 0, 100% 15%, 100% 100%, 15% 100%, 0 85%); 
     top: 250px; 
     left: 0; 
-    transform: rotate(2deg); 
     text-align: left;
 }
 .area-right .pos-story-3 { 
@@ -1382,21 +1403,18 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
     clip-path: polygon(0 0, 85% 0, 100% 15%, 100% 100%, 15% 100%, 0 85%); 
     top: 520px; 
     left: 100px; 
-    transform: rotate(2deg); 
     text-align: right;
 }  
 /* 3. Info (Major/GPA) atas kanan title */
 .area-right .pos-info { 
     top: 30px; 
     left: 100px; 
-    transform: rotate(25deg); 
 }
 /* 4. Foto 1: Samping kanan desc box */
 .area-right .pos-img-1 { 
     top: 350px; 
     left: 500px; 
     z-index: 5; 
-    transform: rotate(5deg); 
     animation: floatY 6s infinite 2s;
 }
 /* 5. Foto 2 & 3: Bawah desc box */
@@ -1404,13 +1422,11 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
     top: 680px; 
     left: 500px;
     z-index: 5; 
-    transform: rotate(-4deg); 
     animation: floatY 4s infinite 1s; 
 }
 .area-right .pos-img-3 { 
     top: 680px; 
     left: 250px; 
-    transform: rotate(3deg); 
     z-index: 5;
     animation: floatY 5s infinite 1.5s; 
 }
@@ -1419,7 +1435,6 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
     top: 680px; 
     left: 0px; 
     z-index: 5;
-    transform: rotate(-6deg); 
     animation: floatY 4.5s infinite 0.5s; 
 }
 
@@ -1437,7 +1452,6 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
     clip-path: polygon(0 0, 85% 0, 100% 15%, 100% 100%, 15% 100%, 0 85%); 
     top: -150px; 
     right: 0; 
-    transform: rotate(-2deg); 
     text-align: right; 
 }
 .area-left .pos-story-2 { 
@@ -1447,7 +1461,6 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
     clip-path: polygon(0 0, 85% 0, 100% 15%, 100% 100%, 15% 100%, 0 85%);
     top: 250px; 
     right: 0; 
-    transform: rotate(-2deg); 
     text-align: left; 
 }
 /* 3. Info (Degree) bawah kiri title */
@@ -1458,7 +1471,6 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
     clip-path: polygon(0 0, 85% 0, 100% 15%, 100% 100%, 15% 100%, 0 85%); 
     top: 200px; 
     right: 350px; 
-    transform: rotate(-4deg); 
     align-items: flex-end; 
 }
 /* 4. Foto 1: Samping kiri desc box */
@@ -1466,7 +1478,6 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
     top: -120px; 
     right: 500px; 
     z-index: 5; 
-    transform: rotate(-5deg); 
     animation: floatY 6s infinite 2s; 
 }
 /* 5. Foto 2 & 3: Atas title (Bawah desc) */
@@ -1474,21 +1485,18 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
     top: -320px; 
     right: 100px; 
     z-index: 5;
-    transform: rotate(4deg); 
     animation: floatY 4s infinite 1s; 
 }
 .area-left .pos-img-3 { 
     top: -320px; 
     right: 370px; 
     z-index: 5;
-    transform: rotate(-3deg); 
     animation: floatY 5s infinite 1.5s; 
 }
 /* 6. Foto 4: Bawah title */
 .area-left .pos-img-4 { 
     top: 80px; 
     right: 450px; 
-    transform: rotate(6deg); 
     z-index: 5;
     animation: floatY 4.5s infinite 0.5s; 
 }
@@ -1503,7 +1511,6 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
     z-index: 1; /* Paling belakang */
     filter: grayscale(100%) drop-shadow(0 0 20px gold);
     pointer-events: none;
-    transform: rotate(-10deg);
 }
 
 /* Container Box PDF */
@@ -1531,24 +1538,38 @@ nav a:hover { opacity: 1; color: var(--accent-blue); }
 
 /* RESPONSIVE (MOBILE) */
 /* Karena layout scatter hancur di HP, kita paksa jadi stack lurus */
+/* 2. Aktifkan Mode Penyusutan di Layar HP */
 @media (max-width: 900px) {
+    
+    /* Targetkan semua wadah yang berisi koordinat absolut */
+    .m-layer,
+    .carousel-container,
     .scatter-layout {
-        position: relative; top: 0; left: 0 !important; right: 0 !important;
-        width: 100%; height: auto;
-        margin-top: 20px;
-        display: flex; flex-direction: column; align-items: center;
-        opacity: 1; visibility: visible;
+        /* RUMUS AJAIB: 
+           100vw (Lebar Layar HP) dibagi 1400 (Asumsi Lebar Desain Laptopmu).
+           Ini akan menyusutkan SEMUA ukuran font, pixel, dan box shadow secara proporsional! 
+        */
+        transform: scale(calc(100vw / 1400)) !important;
+        transform-origin: center center !important;
+        
+        /* Posisikan frame laptop ini persis di tengah layar HP */
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        translate: -50% -50% !important;
+        
+        /* Kunci dimensi agar koordinat absolutmu (top: 350px, left: 500px) tidak berantakan */
+        width: 1400px !important; 
+        height: 800px !important;
+        margin: 0 !important;
     }
+
+    /* 3. Kembalikan Scatter Item ke bentuk aslinya! */
     .scatter-item {
-        position: relative; top: auto !important; left: auto !important; right: auto !important;
-        transform: none !important; margin-bottom: 15px;
-        animation: none; /* Matikan animasi melayang biar hemat baterai */
-        width: 90%; text-align: center !important;
-    }
-    .pos-img-1, .pos-img-2, .pos-img-3 {
-        display: inline-block; width: auto; margin: 5px;
-    }
-    .ghost-logo {
-        position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        position: absolute !important; /* Cabut dari hukum flexbox */
+        text-align: left !important;
+        margin: 0 !important;
+        /* Nyalakan kembali animasi melayang yang sebelumnya kamu matikan di HP */
+        animation: floatY 4s ease-in-out infinite !important; 
     }
 }

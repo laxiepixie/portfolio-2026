@@ -267,6 +267,9 @@ function initFloater() {
 // =========================================
 // 8. GSAP: EXPERIENCE HILL (WAVE / WATERFALL DROP)
 // =========================================
+// =========================================
+// 8. GSAP: EXPERIENCE HILL (WAVE / WATERFALL DROP) + WIND EFFECT
+// =========================================
 function initExperienceHill() {
     const section = document.querySelector('.experience-section');
     const container = document.querySelector('.carousel-container');
@@ -281,14 +284,51 @@ function initExperienceHill() {
     gsap.set(track, { display: 'flex', flexWrap: 'nowrap', width: 'max-content', paddingLeft: '50vw', paddingRight: '50vw', gap: '50px', alignItems: 'flex-end' });
     gsap.set(cards, { width: '300px', height: '450px', flexShrink: 0, position: 'relative' });
 
-    // Efek floating konstan
-    const inners = document.querySelectorAll('.card-inner-flip');
-    inners.forEach((inner, i) => {
-        gsap.to(inner, { y: -15, duration: 1.5 + (i%3)*0.5, yoyo: true, repeat: -1, ease: "sine.inOut" });
+    const cardInners = document.querySelectorAll('.card-inner-flip');
+
+    // ==========================================
+    // A. EFEK MELAYANG (FLOATING KONSTAN)
+    // ==========================================
+    cardInners.forEach((inner, i) => {
+        gsap.to(inner, { 
+            y: -15, 
+            duration: 1.5 + (i % 3) * 0.5, 
+            yoyo: true, 
+            repeat: -1, 
+            ease: "sine.inOut" 
+        });
     });
 
-    let currentActiveCard = null;
+    // ==========================================
+    // B. EFEK ANGIN SAAT SCROLL (WIND TILT)
+    // ==========================================
+    let windTimeout;
+    window.addEventListener('wheel', (e) => {
+        // Tentukan arah kemiringan
+        let tiltAngle = e.deltaY > 0 ? 10 : -10; 
+        
+        // PENTING: Pakai GSAP untuk merotasi agar efek "y" (floating) tidak tertimpa
+        gsap.to(cardInners, { 
+            rotation: tiltAngle, 
+            duration: 0.3, 
+            ease: "power1.out" 
+        });
 
+        // Kembalikan ke posisi tegak setelah berhenti scroll
+        clearTimeout(windTimeout);
+        windTimeout = setTimeout(() => {
+            gsap.to(cardInners, { 
+                rotation: 0, 
+                duration: 0.5, 
+                ease: "back.out(1.5)" // Efek membal elastis saat kembali tegak
+            });
+        }, 150);
+    });
+
+    // ==========================================
+    // C. LOGIKA BUKIT / AIR TERJUN
+    // ==========================================
+    let currentActiveCard = null;
     let mainTl = gsap.timeline({
         scrollTrigger: {
             trigger: section,
@@ -306,47 +346,35 @@ function initExperienceHill() {
                     const cardCenter = rect.left + rect.width / 2;
                     const distance = Math.abs(cardCenter - centerX);
 
-                    // ==========================================
-                    // RUMUS GELOMBANG ASIMETRIS (AIR TERJUN)
-                    // ==========================================
-                    // Ratio: 0 (Tengah), + (Kanan), - (Kiri)
                     const ratio = (cardCenter - centerX) / centerX; 
                     let hillHeight = 0;
                     let tilt = 0;
                     let cardOpacity = 1;
 
                     if (ratio < 0) {
-                        // SISI KIRI: Terjun bebas ke bawah agak ke kiri
                         let dropFactor = Math.abs(ratio);
-                        // Semakin ke kiri, semakin tertarik tajam ke bawah (+500px)
                         hillHeight = -120 + Math.pow(dropFactor * 2.5, 2) * 150; 
-                        tilt = ratio * 20; // Kartu menukik (rotasi ke bawah)
-                        
-                        // Memudar pelan-pelan saat jatuh
+                        tilt = ratio * 20; 
                         if (dropFactor > 0.3) {
                             cardOpacity = 1 - (dropFactor - 0.3) * 2;
                         }
                     } else {
-                        // SISI KANAN: Naik bukit pelan-pelan
                         hillHeight = -120 + Math.pow(ratio, 2) * 150;
-                        tilt = ratio * 10; // Kartu mendongak saat naik
+                        tilt = ratio * 10; 
                     }
                     
-                    // Terapkan pergerakan ombaknya!
                     gsap.set(card, { 
                         y: hillHeight, 
                         rotation: tilt,
-                        opacity: Math.max(cardOpacity, 0) // Jaga agar opacity tidak minus
+                        opacity: Math.max(cardOpacity, 0) 
                     });
 
-                    // Sensor untuk highlight di puncak (tengah)
                     if (distance < minDistance) {
                         minDistance = distance;
                         closestCard = card;
                     }
                 });
 
-                // Trigger Highlight, Video, & Teks
                 if (closestCard && closestCard !== currentActiveCard) {
                     if (currentActiveCard) {
                         currentActiveCard.classList.remove('active-highlight');
@@ -370,20 +398,6 @@ function initExperienceHill() {
     });
 
     mainTl.to(track, { x: () => -(track.scrollWidth - window.innerWidth), ease: "none" });
-
-
-    // B. MESIN MELAYANG (FLOATING)
-    const cardInners = document.querySelectorAll('.card-inner-flip');
-    cardInners.forEach((inner, index) => {
-        const floatDuration = 2 + (index % 3) * 0.5; 
-        gsap.to(inner, {
-            y: -15, 
-            duration: floatDuration, 
-            yoyo: true, 
-            repeat: -1, 
-            ease: "sine.inOut"
-        });
-    });
 }
 
 // =========================================
