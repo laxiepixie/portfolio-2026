@@ -116,31 +116,28 @@ function initHeroParallax() {
 // 4. GSAP: MILESTONE TUNNEL (AUTO-FINDER)
 // =========================================
 function initMilestoneAnimations() {
-    // Cari pakai class ATAU pakai ID (Pelindung Ganda)
-    const section = document.querySelector('.milestone-section') || document.querySelector('#section-c');
-    const layers = document.querySelectorAll('.m-layer'); 
-
-    if (!section || layers.length === 0) return;
-
-    gsap.set(layers, { 
-        autoAlpha: 0, scale: 0.1, position: 'absolute', 
-        top: 0, left: 0, width: '100%', height: '100%', transformOrigin: "center center"
-    });
-
+    const section = document.querySelector('.milestone-section');
+    const layers = document.querySelectorAll('.m-layer');
+    gsap.set(layers, { autoAlpha: 0, scale: 0.1 });
+    gsap.set('.m-layer-intro', { autoAlpha: 1, scale: 1 });
+    
     let tl = gsap.timeline({
         scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: "+=" + (layers.length * 1000), 
+            end: "+=" + (layers.length * 1000),
             scrub: 1,
-            pin: true
+            pin: true,
+            pinType: "transform",   // ADD — keeps pin inside transform context
+            anticipatePin: 1,        // ADD — prevents jump-flash on pin start
+            invalidateOnRefresh: true // ADD — recalculates bounds on resize/rescale
         }
     });
 
+    // Animasi tetap menargetkan layer di dalam stage yang sudah diskala
     layers.forEach((layer) => {
-        tl.to(layer, { autoAlpha: 1, scale: 1, duration: 3, ease: "power2.out" })
-          .to({}, { duration: 1.5 }) 
-          .to(layer, { autoAlpha: 0, scale: 10, duration: 3, ease: "power2.in" });
+        tl.to(layer, { autoAlpha: 1, scale: 1, duration: 3 })
+          .to(layer, { autoAlpha: 0, scale: 10, duration: 3 });
     });
 }
 // =========================================
@@ -264,12 +261,7 @@ function initFloater() {
     });
 }
 
-// =========================================
-// 8. GSAP: EXPERIENCE HILL (WAVE / WATERFALL DROP)
-// =========================================
-// =========================================
-// 8. GSAP: EXPERIENCE HILL (WAVE / WATERFALL DROP) + WIND EFFECT
-// =========================================
+
 function initExperienceHill() {
     const section = document.querySelector('.experience-section');
     const container = document.querySelector('.carousel-container');
@@ -278,16 +270,16 @@ function initExperienceHill() {
 
     if (!section || !track || cards.length === 0) return;
 
-    // Posisi rel di bawah layar
+    // 1. GSAP SET ASLIMU TETAP ADA DI SINI
     gsap.set(section, { display: 'block', position: 'relative', height: '100vh', overflow: 'hidden' });
     gsap.set(container, { position: 'absolute', bottom: '8%', left: 0, width: '100%', display: 'flex', alignItems: 'flex-end', zIndex: 5 });
-    gsap.set(track, { display: 'flex', flexWrap: 'nowrap', width: 'max-content', paddingLeft: '50vw', paddingRight: '50vw', gap: '50px', alignItems: 'flex-end' });
+    gsap.set(track, { display: 'flex', flexWrap: 'nowrap', width: 'max-content', paddingLeft: '720px', paddingRight: '720px', gap: '50px', alignItems: 'flex-end' });
     gsap.set(cards, { width: '300px', height: '450px', flexShrink: 0, position: 'relative' });
 
     const cardInners = document.querySelectorAll('.card-inner-flip');
 
     // ==========================================
-    // A. EFEK MELAYANG (FLOATING KONSTAN)
+    // A. EFEK MELAYANG & ANGIN ASLIMU TETAP ADA
     // ==========================================
     cardInners.forEach((inner, i) => {
         gsap.to(inner, { 
@@ -299,45 +291,39 @@ function initExperienceHill() {
         });
     });
 
-    // ==========================================
-    // B. EFEK ANGIN SAAT SCROLL (WIND TILT)
-    // ==========================================
     let windTimeout;
     window.addEventListener('wheel', (e) => {
-        // Tentukan arah kemiringan
         let tiltAngle = e.deltaY > 0 ? 10 : -10; 
-        
-        // PENTING: Pakai GSAP untuk merotasi agar efek "y" (floating) tidak tertimpa
-        gsap.to(cardInners, { 
-            rotation: tiltAngle, 
-            duration: 0.3, 
-            ease: "power1.out" 
-        });
-
-        // Kembalikan ke posisi tegak setelah berhenti scroll
+        gsap.to(cardInners, { rotation: tiltAngle, duration: 0.3, ease: "power1.out" });
         clearTimeout(windTimeout);
         windTimeout = setTimeout(() => {
-            gsap.to(cardInners, { 
-                rotation: 0, 
-                duration: 0.5, 
-                ease: "back.out(1.5)" // Efek membal elastis saat kembali tegak
-            });
+            gsap.to(cardInners, { rotation: 0, duration: 0.5, ease: "back.out(1.5)" });
         }, 150);
     });
 
     // ==========================================
-    // C. LOGIKA BUKIT / AIR TERJUN
+    // B. LOGIKA SCROLL CLAUDE + WATERFALL ASLIMU
     // ==========================================
     let currentActiveCard = null;
+    
+    // [CLAUDE ADD] — Rasio Skala Panggung
+    const getScale = () => Math.min(window.innerWidth / 1440, 1);
+
     let mainTl = gsap.timeline({
         scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: () => "+=" + track.scrollWidth, 
+            // [CLAUDE CHANGE] — Matematika layar yang benar
+            end: () => "+=" + (track.scrollWidth - 1440) * getScale(), 
             scrub: 1,
             pin: true,
+            pinType: "transform",    // [CLAUDE ADD]
+            anticipatePin: 1,        // [CLAUDE ADD]
+            invalidateOnRefresh: true, // [CLAUDE ADD]
+            
+            // [ASLI] Logika Matematika Bukitmu (onUpdate)
             onUpdate: () => {
-                const centerX = window.innerWidth / 2;
+                const centerX = 720;
                 let closestCard = null;
                 let minDistance = Infinity;
 
@@ -397,9 +383,9 @@ function initExperienceHill() {
         }
     });
 
-    mainTl.to(track, { x: () => -(track.scrollWidth - window.innerWidth), ease: "none" });
+    // [CLAUDE CHANGE] — Geser rel hanya sejauh sisa panggung (bukan sisa layar HP)
+    mainTl.to(track, { x: () => -(track.scrollWidth - 1440), ease: "none" });
 }
-
 // =========================================
 // INIT ALL + LENIS SYNC (SUPER ENGINE)
 // =========================================
@@ -435,3 +421,23 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => { ScrollTrigger.refresh(); }, 1000);
     });
 });
+
+// =========================================
+// HOLO ENGINE: THE DOUBLE CONTAINER SCALER
+// =========================================
+function runHoloEngine() {
+    const canvases = document.querySelectorAll('.holo-canvas');
+    let scaleRatio = document.documentElement.clientWidth / 1440;
+    if (scaleRatio > 1) scaleRatio = 1;
+    canvases.forEach(canvas => {
+        canvas.style.transform = `scale(${scaleRatio})`;
+    });
+
+    // ADD — re-measure all ScrollTrigger instances after DOM rescale
+    // Use requestAnimationFrame to ensure the transform has been painted first
+    requestAnimationFrame(() => ScrollTrigger.refresh());
+}
+
+// Jalankan saat web dimuat dan saat layar di-resize
+window.addEventListener('DOMContentLoaded', runHoloEngine);
+window.addEventListener('resize', runHoloEngine);
