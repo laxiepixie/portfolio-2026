@@ -32,6 +32,7 @@ const typewriterData = [
 
 let partIndex = 0;
 let charIndex = 0;
+let typeWriterTimeout; // 👈 [TAMBAH INI] Variabel penyimpan timer
 
 function runTypeWriter() {
     // 1. Pastikan string di dalam getElementById INI SAMA PERSIS dengan id di HTML-mu
@@ -40,6 +41,9 @@ function runTypeWriter() {
     if (!target) {
         console.warn("⚠️ TYPEWRITER GAGAL: Elemen dengan id='typewriter' tidak ditemukan di HTML!");
         return;
+    }
+    if (partIndex === 0 && charIndex === 0) {
+        target.innerHTML = "";
     }
 
     if (partIndex < typewriterData.length) {
@@ -59,11 +63,13 @@ function runTypeWriter() {
         if (charIndex < textArray.length) {
             currentSpan.innerHTML += textArray[charIndex];
             charIndex++;
-            setTimeout(runTypeWriter, 50); // Kecepatan ketik
+            clearTimeout(typeWriterTimeout); // 👈 Bunuh hantu timer lama
+            typeWriterTimeout = setTimeout(runTypeWriter, 50);
         } else {
             partIndex++;
             charIndex = 0;
-            setTimeout(runTypeWriter, 50);
+            clearTimeout(typeWriterTimeout); // 👈 Bunuh hantu timer lama
+            typeWriterTimeout = setTimeout(runTypeWriter, 50);
         }
     }
 }
@@ -272,8 +278,8 @@ function initExperienceHill() {
 
     // 1. GSAP SET ASLIMU TETAP ADA DI SINI
     gsap.set(section, { display: 'block', position: 'relative', height: '100vh', overflow: 'hidden' });
-    gsap.set(container, { position: 'absolute', bottom: '8%', left: 0, width: '100%', display: 'flex', alignItems: 'flex-end', zIndex: 5 });
-    gsap.set(track, { display: 'flex', flexWrap: 'nowrap', width: 'max-content', paddingLeft: '720px', paddingRight: '720px', gap: '50px', alignItems: 'flex-end' });
+    gsap.set(container, { position: 'absolute', bottom: '8%', left: 0, width: '80%', display: 'flex', alignItems: 'flex-end', zIndex: 5 });
+    gsap.set(track, { display: 'flex', flexWrap: 'nowrap', width: 'max-content', paddingLeft: '1000px', paddingRight: '1000px', gap: '150px', alignItems: 'flex-end' });
     gsap.set(cards, { width: '300px', height: '450px', flexShrink: 0, position: 'relative' });
 
     const cardInners = document.querySelectorAll('.card-inner-flip');
@@ -323,7 +329,7 @@ function initExperienceHill() {
             
             // [ASLI] Logika Matematika Bukitmu (onUpdate)
             onUpdate: () => {
-                const centerX = 720;
+                const centerX = 1050;
                 let closestCard = null;
                 let minDistance = Infinity;
 
@@ -391,6 +397,9 @@ function initExperienceHill() {
 // =========================================
 document.addEventListener('DOMContentLoaded', () => {
     gsap.registerPlugin(ScrollTrigger);
+
+    // 👈 [TAMBAH BARIS INI] Matikan semua trigger GSAP lama peninggalan Vite HMR
+    ScrollTrigger.getAll().forEach(t => t.kill());
 
     // 1. SINKRONISASI LENIS & GSAP (PENTING AGAR TIDAK MACET)
     if (typeof Lenis !== 'undefined') {
